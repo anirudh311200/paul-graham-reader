@@ -1,26 +1,233 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0c0b0a;
+  --foreground: #e8e4dc;
+  --muted: #8a8478;
+  --accent: #c4a77d;
+  --gold: #d4af6a;
+  --surface: #141210;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-gold: var(--gold);
+  --color-surface: var(--surface);
+  --font-serif: var(--font-source-serif);
+  --font-logo: var(--font-pinyon);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
+  overflow-x: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-source-serif), Georgia, serif;
+  overflow-x: hidden;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+::selection {
+  background: rgba(196, 167, 125, 0.25);
+  color: var(--foreground);
+}
+
+@keyframes hero-curtain-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(101%);
+  }
+}
+
+.hero-title-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: clip;
+  overflow-y: visible;
+  line-height: 0;
+}
+
+.hero-title {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0;
+  line-height: normal;
+}
+
+.hero-title-curtain {
+  position: absolute;
+  z-index: 2;
+  inset: -0.08em -0.05em -0.35em -0.05em;
+  background: var(--background);
+  animation: hero-curtain-slide 4.1s cubic-bezier(0.33, 0, 0.15, 1) forwards;
+  will-change: transform;
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .hero-title-curtain {
+    inset: -0.06em -0.04em -0.3em -0.04em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-curtain {
+    display: none;
+  }
+}
+
+/* Essay reader */
+.essay-reader {
+  background: var(--background);
+  border-radius: 1rem;
+  padding: 1.25rem 1rem;
+  margin: 0 -0.5rem;
+}
+
+@media (min-width: 640px) {
+  .essay-reader {
+    padding: 2rem 2.5rem;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}
+
+/* Essay prose */
+.essay-prose {
+  font-family: var(--font-source-serif), Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  color: var(--foreground);
+}
+
+.essay-prose p {
+  margin-bottom: 1.35em;
+}
+
+.essay-prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.essay-prose a:hover {
+  color: var(--foreground);
+}
+
+.essay-prose .footnote-marker {
+  color: var(--muted);
+  font-size: inherit;
+  white-space: nowrap;
+}
+
+.essay-prose .footnote-marker a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.essay-prose .footnote-marker a:hover {
+  color: var(--accent);
+}
+
+.essay-prose .essay-notes .footnote-marker {
+  color: var(--accent);
+  font-weight: 500;
+  margin-right: 0.15em;
+}
+
+.essay-prose .essay-hr {
+  height: 1px;
+  margin: 2.5rem 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+}
+
+.essay-prose .essay-notes-section {
+  margin-top: 2.5rem;
+  padding-top: 0.5rem;
+}
+
+.essay-prose .essay-notes-heading {
+  font-family: var(--font-source-serif), Georgia, serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+
+.essay-prose .essay-notes {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.essay-prose .essay-notes p {
+  margin-bottom: 1em;
+}
+
+.essay-prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Print / PDF */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: #111 !important;
+  }
+
+  .essay-prose {
+    color: #111 !important;
+    font-size: 12pt;
+    line-height: 1.6;
+    max-width: 100%;
+  }
+
+  .print-header,
+  .print-footer {
+    display: block !important;
+  }
+
+  header,
+  footer {
+    display: none !important;
+  }
+}
+
+.print-header,
+.print-footer {
+  display: none;
+}
+
+.print-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+  font-family: Georgia, serif;
+}
+
+.print-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+  font-size: 9pt;
+  color: #666;
 }
