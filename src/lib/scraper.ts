@@ -140,10 +140,12 @@ export async function fetchEssayCatalog(): Promise<EssayCatalog> {
   const articlesHtml = await articlesRes.text();
   const links = parseEssayLinks(articlesHtml);
   const picks = parsePicks(articlesHtml);
-  const pickSlugs = new Set(picks.map((p) => p.slug));
 
   const slugs = links.map((l) => l.slug);
-  const firstSeenMap = await syncFirstSeenSlugs(slugs);
+  const pickOnlySlugs = picks
+    .map((p) => p.slug)
+    .filter((slug) => !slugs.includes(slug));
+  const firstSeenMap = await syncFirstSeenSlugs([...slugs, ...pickOnlySlugs]);
   const essayDateCache = await buildEssayDateCache(slugs);
 
   const essays: Essay[] = links.map((link, index) => {
@@ -162,9 +164,22 @@ export async function fetchEssayCatalog(): Promise<EssayCatalog> {
     };
   });
 
-  const listWithoutPicks = essays.filter((e) => !pickSlugs.has(e.slug));
-  const catalogEssays =
-    listWithoutPicks.length > 0 ? listWithoutPicks : essays;
+  const catalogEssays = [...essays];
+  const catalogSlugs = new Set(catalogEssays.map((e) => e.slug));
+
+  for (const pick of picks) {
+    if (catalogSlugs.has(pick.slug)) continue;
+
+    const stored = firstSeenMap[pick.slug];
+    const firstSeenAt = resolveFirstSeenAt(pick.slug, stored, null);
+
+    catalogEssays.push({
+      ...pick,
+      firstSeenAt,
+      isNew: computeIsNew(firstSeenAt),
+    });
+    catalogSlugs.add(pick.slug);
+  }
 
   const newEssays = catalogEssays.filter((e) => e.isNew);
 

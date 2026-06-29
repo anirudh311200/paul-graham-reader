@@ -8,6 +8,7 @@ const pinyon = Pinyon_Script({
   variable: "--font-pinyon",
   subsets: ["latin"],
   weight: "400",
+  display: "block",
 });
 
 const sourceSerif = Source_Serif_4({
