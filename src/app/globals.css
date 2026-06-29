@@ -7,6 +7,13 @@
   --accent: #c4a77d;
   --gold: #d4af6a;
   --surface: #141210;
+  --site-header-height: calc(env(safe-area-inset-top) + 3.75rem);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --site-header-height: calc(env(safe-area-inset-top) + 5.75rem);
+  }
 }
 
 @theme inline {
@@ -22,16 +29,19 @@
 
 html {
   color-scheme: dark;
-  overflow-x: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-source-serif), Georgia, serif;
-  overflow-x: hidden;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+  padding-top: var(--site-header-height);
+}
+
+.site-scroll {
+  overflow-x: clip;
 }
 
 ::selection {

@@ -8,7 +8,7 @@ const navItems = [
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-background/95 pt-[env(safe-area-inset-top)] backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-50 bg-background/95 pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8 sm:py-5">
         <Link href="/" className="group min-w-0 shrink">
           <span className="font-logo text-2xl tracking-wide text-foreground transition-opacity group-hover:opacity-80 sm:text-4xl">

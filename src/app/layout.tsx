@@ -41,7 +41,7 @@ export default function RootLayout({
       lang="en"
       className={`${pinyon.variable} ${sourceSerif.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col font-serif">
+      <body className="site-scroll flex min-h-full flex-col font-serif">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
